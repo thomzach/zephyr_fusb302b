@@ -20,10 +20,14 @@ struct alert_info {
 struct fusb302b_data {
   const struct device *const dev;
   struct alert_info alert_info;
+  tcpc_alert_handler_cb_t alert_handler;
+  void *alert_handler_data;
   int cc;
 
   struct k_work alert_work;
   struct gpio_callback alert_cb;
+  bool msg_pending;
+  struct pd_msg rx_msg;
 };
 
 struct fusb302b_cfg {
