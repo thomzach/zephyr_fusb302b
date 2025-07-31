@@ -6,24 +6,29 @@
 #ifndef ZEPHYR_DRIVERS_USBC_DEVICE_FUSB302B_PRIVATE_H_
 #define ZEPHYR_DRIVERS_USBC_DEVICE_FUSB302B_PRIVATE_H_
 
+#include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/drivers/usb_c/usbc_tcpc.h>
-#include <zephyr/drivers/gpio.h>
 
 #define FUSB302_RX_BUFFER_SIZE 80
 
 struct alert_info {
-	void *data;
-	tcpc_alert_handler_cb_t handler;
+  void *data;
+  tcpc_alert_handler_cb_t handler;
 };
 
 struct fusb302b_data {
-	struct alert_info alert_info;
-	int cc;
+  const struct device *const dev;
+  struct alert_info alert_info;
+  int cc;
+
+  struct k_work alert_work;
+  struct gpio_callback alert_cb;
 };
 
 struct fusb302b_cfg {
-	struct i2c_dt_spec i2c;
+  struct i2c_dt_spec i2c;
+  const struct gpio_dt_spec alert_gpio;
 };
 
 int fusb302b_init(const struct device *dev);

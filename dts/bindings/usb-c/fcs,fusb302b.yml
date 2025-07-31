@@ -6,3 +6,11 @@ description: FUSB302B Programmable USB Type-C Controller with PD
 compatible: "fcs,fusb302b"
 
 include: i2c-device.yaml
+
+properties:
+
+  irq-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Interrupt GPIO pin connected from the chip.
